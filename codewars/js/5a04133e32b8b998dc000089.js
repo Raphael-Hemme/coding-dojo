@@ -10,3 +10,6 @@ function solve(arr) {
         i === cpArr.length - 1 || el > Math.max(...cpArr.slice(i + 1)),
     );
 }
+
+// V-2
+const solve = (arr) => arr.filter((el, i) => i === arr.length - 1 || el > Math.max(...arr.slice(i + 1)));
