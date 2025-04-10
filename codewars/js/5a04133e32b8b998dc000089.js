@@ -2,7 +2,7 @@
 // 7kyu - Dominant array elements
 
 // V-1
-function solve(arr) {
+const solveV1 = (arr) => {
   return arr
     .slice()
     .filter(
@@ -12,4 +12,4 @@ function solve(arr) {
 }
 
 // V-2
-const solve = (arr) => arr.filter((el, i) => i === arr.length - 1 || el > Math.max(...arr.slice(i + 1)));
+const solveV2 = (arr) => arr.filter((el, i) => i === arr.length - 1 || el > Math.max(...arr.slice(i + 1)));
