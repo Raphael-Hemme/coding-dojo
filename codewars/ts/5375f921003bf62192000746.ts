@@ -37,21 +37,45 @@ export const abbreviateV1 = (str: string): string => {
 }
 
 //V-2
-type WordReducerState = { words: string[], currWord: string };
-const INITIAL_STATE: WordReducerState = { words: [], currWord: '' };
+type WordReducerStateV2 = { words: string[], currWord: string };
+const INITIAL_STATE_V2: WordReducerState = { words: [], currWord: '' };
 
-const isAlphabet = (char: string): boolean => /[a-zA-Z]$/.test(char);
-const abbreviateWord = (word: string): string => word.length >= 4 ? `${word.charAt(0)}${word.length - 2}${word.charAt(word.length - 1)}` : word;
-const wordReducer = (acc: WordReducerState, curr: string, i: number, arr: string[]): WordReducerState => {
+const isAlphabetV2 = (char: string): boolean => /[a-zA-Z]$/.test(char);
+const abbreviateWordV2 = (word: string): string => word.length >= 4 ? `${word.charAt(0)}${word.length - 2}${word.charAt(word.length - 1)}` : word;
+const wordReducerV2 = (acc: WordReducerState, curr: string, i: number, arr: string[]): WordReducerStateV2 => {
   const newState = { ...acc };
-  const endWord = !isAlphabet(curr) || i >= arr.length - 1;
-  if (isAlphabet(curr)) {
+  const endWord = !isAlphabetV2(curr) || i >= arr.length - 1;
+  if (isAlphabetV2(curr)) {
     newState.currWord += curr;
   }
   if (endWord && newState.currWord.length > 0) {
     newState.words.push(newState.currWord);
     newState.currWord = '';
   }
+  return newState;
+}
+
+export const abbreviateV2 = (str: string): string => {
+  const {words} = str.split('').reduce((acc, curr, i, arr) => wordReducerV2(acc, curr, i, arr), INITIAL_STATE_V2);
+  let result = str;
+  words.forEach(word => result = result.replace(word, abbreviateWordV2(word)));
+  return result;
+}
+
+//V-3
+type WordReducerState = { words: string[], currWord: string };
+const INITIAL_STATE: WordReducerState = { words: [], currWord: '' };
+
+const isAlphabet = (char: string): boolean => /[a-zA-Z]$/.test(char);
+const abbreviateWord = (word: string): string => word.length >= 4 ? `${word.charAt(0)}${word.length - 2}${word.charAt(word.length - 1)}` : word;
+const wordReducer = (acc: WordReducerState, char: string, i: number, arr: string[]): WordReducerState => {
+  const endWord = !isAlphabet(char) || i >= arr.length - 1;
+  const currWord = isAlphabet(char) ? acc.currWord + char : acc.currWord;
+  const newState = {
+    ...acc,
+    words: endWord ? [...acc.words, currWord] : acc.words,
+    currWord: endWord ? '' : currWord
+  };
   return newState;
 }
 
