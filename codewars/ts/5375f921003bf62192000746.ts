@@ -1,6 +1,7 @@
 // https://www.codewars.com/kata/5375f921003bf62192000746/train/typescript
 // 6 kyu - Word a10n (abbreviation)
 
+// V-1
 type Triplet = [string | undefined, string, string | undefined];
 
 const isAlphabetical = (char: string | undefined): boolean => !char ? false : /[a-zA-Z]$/.test(char);
@@ -26,11 +27,37 @@ const extractWords = (arr: string[]): string[] => {
   return result;
 }
 
-export const abbreviate = (str: string): string => {
+export const abbreviateV1 = (str: string): string => {
   const wordArr = extractWords(str.split(''));
   let abbrString = str;
   wordArr.forEach(word => {
     abbrString = abbrString.replace(word, getAbbrWord(word));
   });
   return abbrString;
+}
+
+//V-2
+type WordReducerState = { words: string[], currWord: string };
+const INITIAL_STATE: WordReducerState = { words: [], currWord: '' };
+
+const isAlphabet = (char: string): boolean => /[a-zA-Z]$/.test(char);
+const abbreviateWord = (word: string): string => word.length >= 4 ? `${word.charAt(0)}${word.length - 2}${word.charAt(word.length - 1)}` : word;
+const wordReducer = (acc: WordReducerState, curr: string, i: number, arr: string[]): WordReducerState => {
+  const newState = { ...acc };
+  const endWord = !isAlphabet(curr) || i >= arr.length - 1;
+  if (isAlphabet(curr)) {
+    newState.currWord += curr;
+  }
+  if (endWord && newState.currWord.length > 0) {
+    newState.words.push(newState.currWord);
+    newState.currWord = '';
+  }
+  return newState;
+}
+
+export const abbreviate = (str: string): string => {
+  const {words} = str.split('').reduce((acc, curr, i, arr) => wordReducer(acc, curr, i, arr), INITIAL_STATE);
+  let result = str;
+  words.forEach(word => result = result.replace(word, abbreviateWord(word)));
+  return result;
 }
