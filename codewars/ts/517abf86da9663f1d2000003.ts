@@ -2,7 +2,7 @@
 // 6 kyu - Convert string to camel case
 
 // V-1
-export const toCamelCase = (str: string): string => {
+export const toCamelCaseV1 = (str: string): string => {
   const result = str.split('')
     .map((char, i, arr) => {
       const lastChar = arr[i - 1];
@@ -17,3 +17,12 @@ export const toCamelCase = (str: string): string => {
     .join('');
   return result
 }
+
+// V-2
+const lastChar = (arr: string[], i: number) => arr[i - 1];
+const isCharDashOrUnderscore = (char: string): boolean => (char === '-' || char === '_')
+export const toCamelCase = (str: string): string => str
+    .split('')
+    .map((char, i, arr) => (i !== 0 && isCharDashOrUnderscore(lastChar(arr, i))) ? char.toUpperCase() : char)
+    .filter((char) => !isCharDashOrUnderscore(char))
+    .join('');
