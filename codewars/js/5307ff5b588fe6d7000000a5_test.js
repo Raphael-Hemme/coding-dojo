@@ -1,5 +1,5 @@
 // https://www.codewars.com/kata/5307ff5b588fe6d7000000a5
-// 6 kzu - Once
+// 6 kyu - Once
 
 import { expect } from "jsr:@std/expect";
 import { describe, it } from "jsr:@std/testing/bdd";

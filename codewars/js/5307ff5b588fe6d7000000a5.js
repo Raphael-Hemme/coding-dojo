@@ -1,5 +1,5 @@
 // https://www.codewars.com/kata/5307ff5b588fe6d7000000a5
-// 6 kzu - Once
+// 6 kyu - Once
 
 export const once = (fn) => {
   let hasRun = false;
